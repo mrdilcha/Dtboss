@@ -1,33 +1,43 @@
-document.getElementById('predict-btn').addEventListener('click', function() {
-    const dragonCard = parseInt(document.getElementById('dragon').value);
-    const tigerCard = parseInt(document.getElementById('tiger').value);
+// Function to fetch CSV file and check the dragon and tiger numbers
+function predictWinner() {
+    // Get the input values
+    const dragonNumber = document.getElementById('dragonCard').value;
+    const tigerNumber = document.getElementById('tigerCard').value;
 
-    if (!dragonCard || !tigerCard || dragonCard < 1 || dragonCard > 13 || tigerCard < 1 || tigerCard > 13) {
-        alert("Please enter valid card numbers between 1 and 13.");
-        return;
-    }
-
+    // Fetch the CSV file
     fetch('DRAGON VS TIGER PREDICTIOR.csv')
         .then(response => response.text())
         .then(data => {
-            const rows = data.split('\n').map(row => row.split(','));
-            
-            // Iterate through the CSV rows to find a match
-            for (let i = 0; i < rows.length; i++) {
-                const dragonCSV = parseInt(rows[i][0].trim());
-                const tigerCSV = parseInt(rows[i][1].trim());
-                const resultCSV = rows[i][2].trim();
+            // Parse the CSV data
+            const lines = data.split('\n');
+            let found = false;
 
-                if (dragonCSV === dragonCard && tigerCSV === tigerCard) {
-                    document.getElementById('result').textContent = `The winner is: ${resultCSV}`;
-                    return;
+            // Loop through the CSV data to find the match
+            for (let i = 0; i < lines.length; i++) {
+                const row = lines[i].split(',');
+                const dragon = row[0];
+                const tiger = row[1];
+                const result = row[2];
+
+                // Check if the input matches any row in the CSV
+                if (dragon == dragonNumber && tiger == tigerNumber) {
+                    document.getElementById('winner').innerText = "The winner is: " + result;
+                    found = true;
+                    break;
                 }
             }
 
-            document.getElementById('result').textContent = 'No result found for these card numbers.';
+            // If no match is found, predict based on probability
+            if (!found) {
+                document.getElementById('winner').innerText =
+                    "No result found! We'll predict based on probability: " +
+                    (Math.random() < 0.5 ? "Dragon" : "Tiger");
+            }
         })
         .catch(error => {
-            console.error("Error loading CSV file:", error);
-            document.getElementById('result').textContent = 'Error loading data.';
+            console.error('Error fetching or parsing the CSV file:', error);
         });
-});
+}
+
+// Add event listener to the button
+document.getElementById('predictButton').addEventListener('click', predictWinner);
