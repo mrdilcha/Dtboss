@@ -27,11 +27,9 @@ function predictWinner() {
                 }
             }
 
-            // If no match is found, predict based on probability
+            // If no match is found, display "Wait For Next Round!!!"
             if (!found) {
-                document.getElementById('winner').innerText =
-                    "No result found! We'll predict based on probability: " +
-                    (Math.random() < 0.5 ? "Dragon" : "Tiger");
+                document.getElementById('winner').innerText = "Wait For Next Round!!!";
             }
         })
         .catch(error => {
