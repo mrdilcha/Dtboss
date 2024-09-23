@@ -5,7 +5,7 @@ function predictWinner() {
     const tigerNumber = document.getElementById('tigerCard').value;
 
     // Fetch the CSV file
-    fetch('DRAGON VS TIGER PREDICTIOR.csv')
+    fetch('./DRAGON VS TIGER PREDICTIOR.csv')
         .then(response => response.text())
         .then(data => {
             // Parse the CSV data
