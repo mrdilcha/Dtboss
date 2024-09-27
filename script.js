@@ -1,37 +1,38 @@
-// Load CSV data and parse it
+// Load CSV data from local repository and parse it
 async function loadCSV() {
-    const response = await fetch('/mnt/data/generated_dragon_vs_tiger_1000_rows.csv');
+    const response = await fetch('./generated_dragon_vs_tiger_1000_rows.csv');
     const data = await response.text();
 
     const rows = data.split('\n').map(row => row.split(','));
     return rows.slice(1);  // Remove the header row
 }
 
-// Predict the winner based on current Dragon and Tiger cards
+// Predict the winner based on user input of Dragon and Tiger cards
 function predictWinner(dragonCard, tigerCard, data) {
     const foundResult = data.find(row => parseInt(row[0]) === dragonCard && parseInt(row[1]) === tigerCard);
     if (foundResult) {
-        return foundResult[2];  // Return the "Win" column
+        return foundResult[2];  // Return the "Win" column (Dragon or Tiger)
     } else {
-        return 'No prediction available';
+        return 'Wait For Next Round!';
     }
 }
 
 // Start the prediction process
 async function startPrediction() {
-    const dragonCard = Math.floor(Math.random() * 13) + 1;
-    const tigerCard = Math.floor(Math.random() * 13) + 1;
+    const dragonCard = parseInt(document.getElementById('dragon-card').value);
+    const tigerCard = parseInt(document.getElementById('tiger-card').value);
 
-    // Display random Dragon and Tiger cards
-    document.getElementById('dragon-card').textContent = `► Dragon Card : ${dragonCard}`;
-    document.getElementById('tiger-card').textContent = `► Tiger Card : ${tigerCard}`;
+    if (!dragonCard || !tigerCard) {
+        document.getElementById('result').textContent = '► Result: Please enter both cards!';
+        return;
+    }
 
     // Load the CSV data
     const data = await loadCSV();
 
     // Predict the winner
     const result = predictWinner(dragonCard, tigerCard, data);
-    document.getElementById('result').textContent = `► Result : ${result}`;
+    document.getElementById('result').textContent = `► Result: ${result}`;
 }
 
 // Create random floating nodes
