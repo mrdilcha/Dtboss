@@ -1,33 +1,44 @@
-document.getElementById('predict-btn').addEventListener('click', function() {
-    const dragonCard = parseInt(document.getElementById('dragon').value);
-    const tigerCard = parseInt(document.getElementById('tiger').value);
+// Load CSV data and parse it
+async function loadCSV() {
+    const response = await fetch('/mnt/data/generated_dragon_vs_tiger_1000_rows.csv');
+    const data = await response.text();
 
-    if (!dragonCard || !tigerCard || dragonCard < 1 || dragonCard > 13 || tigerCard < 1 || tigerCard > 13) {
-        alert("Please enter valid card numbers between 1 and 13.");
-        return;
+    const rows = data.split('\n').map(row => row.split(','));
+    return rows.slice(1);  // Remove the header row
+}
+
+// Predict the winner based on current Dragon and Tiger cards
+function predictWinner(dragonCard, tigerCard, data) {
+    const foundResult = data.find(row => parseInt(row[0]) === dragonCard && parseInt(row[1]) === tigerCard);
+    if (foundResult) {
+        return foundResult[2];  // Return the "Win" column
+    } else {
+        return 'No prediction available';
     }
+}
 
-    fetch('generated_dragon_vs_tiger_1000_rows.csv')
-        .then(response => response.text())
-        .then(data => {
-            const rows = data.split('\n').map(row => row.split(','));
-            
-            // Iterate through the CSV rows to find a match
-            for (let i = 0; i < rows.length; i++) {
-                const dragonCSV = parseInt(rows[i][0].trim());
-                const tigerCSV = parseInt(rows[i][1].trim());
-                const resultCSV = rows[i][2].trim();
+// Start the prediction process
+async function startPrediction() {
+    const dragonCard = Math.floor(Math.random() * 13) + 1;
+    const tigerCard = Math.floor(Math.random() * 13) + 1;
 
-                if (dragonCSV === dragonCard && tigerCSV === tigerCard) {
-                    document.getElementById('result').textContent = `The winner is: ${resultCSV}`;
-                    return;
-                }
-            }
+    // Display random Dragon and Tiger cards
+    document.getElementById('dragon-card').textContent = `► Dragon Card : ${dragonCard}`;
+    document.getElementById('tiger-card').textContent = `► Tiger Card : ${tigerCard}`;
 
-            document.getElementById('result').textContent = 'No result found for these card numbers.';
-        })
-        .catch(error => {
-            console.error("Error loading CSV file:", error);
-            document.getElementById('result').textContent = 'Error loading data.';
-        });
-});
+    // Load the CSV data
+    const data = await loadCSV();
+
+    // Predict the winner
+    const result = predictWinner(dragonCard, tigerCard, data);
+    document.getElementById('result').textContent = `► Result : ${result}`;
+}
+
+// Create random floating nodes
+for (let i = 0; i < 20; i++) {
+    const node = document.createElement('div');
+    node.classList.add('node');
+    node.style.left = `${Math.random() * 100}%`;
+    node.style.top = `${Math.random() * 100}%`;
+    document.body.appendChild(node);
+}
