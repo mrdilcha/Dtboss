@@ -89,8 +89,15 @@
             margin-bottom: 10px;
             width: 100%;
         }
-        .input-group {
+        input {
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 10px;
             margin-bottom: 10px;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 5px;
         }
         .start-btn {
             background-color: #008000;
@@ -112,20 +119,10 @@
             <img src="https://www.rummyeast.in/img/topIcon.png" alt="Dragon Tiger Fight">
         </div>
         <h1>Dragon Tiger (Hack)</h1>
-        <div class="info" id="server-status">► Server : Connected ✓</div>
-
-        <div class="input-group">
-            <label for="dragon-card">Dragon Card:</label>
-            <input type="number" id="dragon-card" min="1" max="13" placeholder="Enter Dragon Card">
-        </div>
-
-        <div class="input-group">
-            <label for="tiger-card">Tiger Card:</label>
-            <input type="number" id="tiger-card" min="1" max="13" placeholder="Enter Tiger Card">
-        </div>
-
-        <div class="info" id="result">► Result: </div>
-
+        <div class="info">► Server : Connected ✓</div>
+        <input type="number" id="dragon-card" placeholder="Enter Dragon Card Number">
+        <input type="number" id="tiger-card" placeholder="Enter Tiger Card Number">
+        <div class="info" id="result">► Result: No prediction available</div>
         <button class="start-btn" onclick="startPrediction()">START</button>
     </div>
 
