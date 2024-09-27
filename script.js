@@ -7,7 +7,7 @@ document.getElementById('predict-btn').addEventListener('click', function() {
         return;
     }
 
-    fetch('DRAGON VS TIGER PREDICTIOR.csv')
+    fetch('generated_dragon_vs_tiger_1000_rows.csv')
         .then(response => response.text())
         .then(data => {
             const rows = data.split('\n').map(row => row.split(','));
