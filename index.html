@@ -89,6 +89,9 @@
             margin-bottom: 10px;
             width: 100%;
         }
+        .input-group {
+            margin-bottom: 10px;
+        }
         .start-btn {
             background-color: #008000;
             color: #fff;
@@ -110,9 +113,19 @@
         </div>
         <h1>Dragon Tiger (Hack)</h1>
         <div class="info" id="server-status">► Server : Connected ✓</div>
-        <div class="info" id="dragon-card">► Dragon Card : 13</div>
-        <div class="info" id="tiger-card">► Tiger Card : 2</div>
-        <div class="info" id="result">► Result : Tiger</div>
+
+        <div class="input-group">
+            <label for="dragon-card">Dragon Card:</label>
+            <input type="number" id="dragon-card" min="1" max="13" placeholder="Enter Dragon Card">
+        </div>
+
+        <div class="input-group">
+            <label for="tiger-card">Tiger Card:</label>
+            <input type="number" id="tiger-card" min="1" max="13" placeholder="Enter Tiger Card">
+        </div>
+
+        <div class="info" id="result">► Result: </div>
+
         <button class="start-btn" onclick="startPrediction()">START</button>
     </div>
 
