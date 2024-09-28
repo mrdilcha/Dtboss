@@ -3,15 +3,25 @@ async function loadCSV() {
     const response = await fetch('./generated_dragon_vs_tiger_1000_rows.csv');
     const data = await response.text();
 
-    const rows = data.split('\n').map(row => row.split(','));
-    return rows.slice(1);  // Remove the header row
+    const rows = data.split('\n').map(row => row.trim().split(',')); // Trim to remove any extra spaces
+    console.log("Loaded CSV Rows:", rows); // Debug: log the loaded rows
+
+    return rows.slice(1);  // Remove the header row (first row)
 }
 
 // Predict the winner based on user input of Dragon and Tiger cards
 function predictWinner(dragonCard, tigerCard, data) {
-    const foundResult = data.find(row => parseInt(row[0]) === dragonCard && parseInt(row[1]) === tigerCard);
+    console.log("Input Dragon Card:", dragonCard, "Input Tiger Card:", tigerCard); // Debug: log inputs
+
+    // Search for the row where Dragon Card and Tiger Card match
+    const foundResult = data.find(row => {
+        console.log("Checking row:", row); // Debug: log each row being checked
+        return parseInt(row[0].trim()) === dragonCard && parseInt(row[1].trim()) === tigerCard;
+    });
+
     if (foundResult) {
-        return foundResult[2];  // Return the "Win" column (Dragon or Tiger)
+        console.log("Match Found:", foundResult); // Debug: log the matching row
+        return foundResult[2].trim();  // Return the "Win" column (Dragon or Tiger)
     } else {
         return 'Wait For Next Round!';
     }
@@ -35,7 +45,7 @@ async function startPrediction() {
     document.getElementById('result').textContent = `► Result: ${result}`;
 }
 
-// Create random floating nodes
+// Create random floating nodes (cosmetic only)
 for (let i = 0; i < 20; i++) {
     const node = document.createElement('div');
     node.classList.add('node');
